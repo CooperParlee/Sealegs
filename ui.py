@@ -6,17 +6,6 @@ import darkdetect
 
 import pywinstyles, sys, os
 
-def apply_theme_to_titlebar(root):
-    version = sys.getwindowsversion()
-    if version.major == 10:
-        pywinstyles.apply_style(root, "dark" if sv_ttk.get_theme() == "dark" else "normal")
-
-        # A hacky way to update the title bar's color on Windows 10 (it doesn't update instantly like on Windows 11)
-        root.wm_attributes("-alpha", 0.99)
-        root.wm_attributes("-alpha", 1)
-
-
-
 class ShipDetails (ttk.LabelFrame):
     COORD_WIDTH = 5;
     IMO_WIDTH = 10;
@@ -25,6 +14,15 @@ class ShipDetails (ttk.LabelFrame):
         print("Update details triggered")
     def acquire(self, event):
         print("Acquire Vessel button clicked");
+    
+    def update_cpa(self, event):
+        print("Update CPA triggered")
+        lat = self.lat_entry.get()
+        lon = self.lon_entry.get()
+
+        if lat and lon:
+            print(f"Latitude: {lat}, Longitude: {lon}");
+
     def __init__ (self, parent):
         super().__init__(parent, text="Ship Details", padding=15)
         self.parent = parent
@@ -50,20 +48,29 @@ class ShipDetails (ttk.LabelFrame):
         self.vessel_name_entry.grid(row=1, column=1, padx=(10, 0), sticky="ew")
         self.vessel_name_entry.bind("<Return>", self.update_details)
 
+        self.nav_status_label = ttk.Label(self, text="Navigational Status:")
+        self.nav_status_label.grid(row=2, column=0, pady=(10, 0), sticky="w")
+        self.nav_status_entry = ttk.Label(self, text="Underway using engine")
+        self.nav_status_entry.grid(row=2, column=1, padx=(10,0), pady=(10, 0), sticky="w")
+
+        self.cpa_label = ttk.Label(self, text="Nearest Land:")
+        self.cpa_label.grid(row=3, column=0, sticky="w")
+        self.cpa_actual = ttk.Label(self, text="-")
+        self.cpa_actual.grid(row=3, column=1, padx=(10, 0), sticky="ew")
+
         self.coord_frame = ttk.Frame(self)
-        self.coord_frame.grid(row=2, column=0, columnspan=2, pady = 10, sticky="ew")
+        self.coord_frame.grid(row=4, column=0, columnspan=2, pady = 10, sticky="ew")
         self.lat_label = ttk.Label(self.coord_frame, text="LAT:")
         self.lat_label.grid(row=0, column=0, sticky="w")
         self.lat_entry = ttk.Entry(self.coord_frame, width=self.COORD_WIDTH)
         self.lat_entry.grid(row=0, column=1, padx=(5, 10), sticky="w")
+        self.lat_entry.bind("<Return>", self.update_cpa)
+
         self.lon_label = ttk.Label(self.coord_frame, text="LON:")
         self.lon_label.grid(row=0, column=2, sticky="w")
         self.lon_entry = ttk.Entry(self.coord_frame, width=self.COORD_WIDTH)
         self.lon_entry.grid(row=0, column=3, padx=(5, 0), sticky="w")
-
-
-
-        
+        self.lon_entry.bind("<Return>", self.update_cpa)
 
 class App(ttk.Frame):
     def __init__ (self, parent):
@@ -79,8 +86,6 @@ def main():
     root = tkinter.Tk()
     sv_ttk.set_theme("dark")
     
-    #if os.name == 'nt':
-    #    apply_theme_to_titlebar(root)
     root.title("Sealegs - Ship Strava Uploader Tool")
 
     App(root).pack(expand=True, fill="both")
