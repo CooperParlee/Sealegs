@@ -34,3 +34,21 @@ def bearing_to_nearest(lat, lon, nearest):
     b_compass = (degrees(b_init) + 360) % 360
 
     return b_compass;
+
+def angle_to_compass(angle_deg):
+    """
+    Converts an angle (in degrees) to the nearest 16-point compass direction.
+    """
+    directions = [
+        "N", "NNE", "NE", "ENE",
+        "E", "ESE", "SE", "SSE",
+        "S", "SSW", "SW", "WSW",
+        "W", "WNW", "NW", "NNW"
+    ]
+    
+    # Normalize angle to [0, 360)
+    angle_deg = angle_deg % 360
+
+    # Each direction covers 360 / 16 = 22.5 degrees
+    index = int((angle_deg + 11.25) // 22.5) % 16
+    return directions[index]

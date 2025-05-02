@@ -6,10 +6,11 @@ import darkdetect
 
 import pywinstyles, sys, os
 import closest_land
+from common import cTrunc
 
 class ShipDetails (ttk.LabelFrame):
-    COORD_WIDTH = 5;
-    IMO_WIDTH = 10;
+    COORD_WIDTH = 20;
+    IMO_WIDTH = 25;
 
     def update_details(self, event):
         print("Update details triggered")
@@ -22,12 +23,18 @@ class ShipDetails (ttk.LabelFrame):
         lon = self.lon_entry.get()
 
         if lat and lon:
-            print(f"Latitude: {lat}, Longitude: {lon}");
-            nearest = closest_land.closest_land(float(lat), float(lon));
-            distance = closest_land.distance_to_nearest(float(lat), float(lon), nearest);
-            bearing = closest_land.bearing_to_nearest(float(lat), float(lon), nearest)
+            print(f"Latitude: {cTrunc(lat, 2)}, Longitude: {cTrunc(lon, 2)}")
+
+            nearest = closest_land.closest_land(float(lat), float(lon))
+            distance = cTrunc(closest_land.distance_to_nearest(float(lat), float(lon), nearest), 1)
+            bearing = cTrunc(closest_land.bearing_to_nearest(float(lat), float(lon), nearest), 0)
+
+            cardinal = closest_land.angle_to_compass(bearing)
+
             print(f"Distance to nearest land: {distance} nautical miles")
             print(f"Bearing to nearest land: {bearing} degrees")
+
+            self.cpa_actual.config(text=f"{distance} NM at {bearing}° ({cardinal})")
 
 
     def __init__ (self, parent):
@@ -57,7 +64,7 @@ class ShipDetails (ttk.LabelFrame):
 
         self.nav_status_label = ttk.Label(self, text="Navigational Status:")
         self.nav_status_label.grid(row=2, column=0, pady=(10, 0), sticky="w")
-        self.nav_status_entry = ttk.Label(self, text="Underway using engine")
+        self.nav_status_entry = ttk.Label(self, text="-")
         self.nav_status_entry.grid(row=2, column=1, padx=(10,0), pady=(10, 0), sticky="w")
 
         self.cpa_label = ttk.Label(self, text="Nearest Land:")
