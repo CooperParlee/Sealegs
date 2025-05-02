@@ -96,6 +96,8 @@ class ShipDetails (ttk.LabelFrame):
 
 class ActivityDetails(ttk.LabelFrame):
     LOG_WIDTH = 5;
+    DISTANCE_WIDTH = 3;
+    ACTIVITY_TYPES = ["Run", "Ride", "Elliptical", "Workout"];
 
     def __init__ (self, parent):
         super().__init__(parent, text="Activity", padding=15)
@@ -122,8 +124,20 @@ class ActivityDetails(ttk.LabelFrame):
         self.log_frame.grid(row=1, column=1, sticky="e")
 
         # Activity Type Dropdown
+        self.type_label = ttk.Label(self, text="Type:")
+        self.type_label.grid(row=2, column=0, pady=10, sticky="w")
+        self.type_dropdown = ttk.Combobox(self, values=self.ACTIVITY_TYPES, state="readonly", text="Sport")
+        self.type_dropdown.grid(row=2, column=1, padx=(10,0), pady=10, sticky="ew")
 
         # Distance entry box
+        self.distance_label = ttk.Label(self, text="Distance:")
+        self.distance_box = ttk.Frame(self)
+        self.distance_entry = ttk.Entry(self.distance_box, width=self.DISTANCE_WIDTH)
+        self.distance_entry.grid(row=0, column=0)
+        self.mi_label = ttk.Label(self.distance_box, text="mi")
+        self.mi_label.grid(row=0, column=1, padx=(5,0))
+        self.distance_label.grid(row=3, column=0, sticky="w")
+        self.distance_box.grid(row=3, column=1, padx=0, sticky="e")
 
         # Duration menu
 
