@@ -42,12 +42,14 @@ class ShipDetails (ttk.LabelFrame):
         self.parent = parent
         self.add_widgets()
     def add_widgets(self):
-        self.ship_frame = ttk.Frame(self)
-        self.ship_frame.grid(row=0, column=1, pady=(0, 10), sticky="ew")
 
+        # Add an IMO label
         self.IMO_label = ttk.Label(self, text="IMO:")
         self.IMO_label.grid(row=0, column=0, pady=(0,10), sticky="w")
 
+        # Create a frame for the IMO search entry and button
+        self.ship_frame = ttk.Frame(self)
+        self.ship_frame.grid(row=0, column=1, pady=(0, 10), sticky="ew")
         self.IMO_entry = ttk.Entry(self.ship_frame, width=self.IMO_WIDTH)
         self.IMO_entry.grid(row=0, column=0, padx=(10, 10), sticky="w")
         self.IMO_entry.bind("<Return>", self.acquire)
@@ -56,22 +58,27 @@ class ShipDetails (ttk.LabelFrame):
 
         self.IMO_button.bind("<Button-1>", self.acquire)
 
+        # Entry for the vessel name, especially important if manual entry is necessary
         self.vessel_name_label = ttk.Label(self, text="Name:")
         self.vessel_name_label.grid(row=1, column=0, sticky="w")
         self.vessel_name_entry = ttk.Entry(self)
         self.vessel_name_entry.grid(row=1, column=1, padx=(10, 0), sticky="ew")
         self.vessel_name_entry.bind("<Return>", self.update_details)
 
+        # Vessel Navigational Status (underway using engine, moored, etc)
+        # TODO: consider switching this to a dropdown menu
         self.nav_status_label = ttk.Label(self, text="Navigational Status:")
         self.nav_status_label.grid(row=2, column=0, pady=(10, 0), sticky="w")
         self.nav_status_entry = ttk.Label(self, text="-")
         self.nav_status_entry.grid(row=2, column=1, padx=(10,0), pady=(10, 0), sticky="w")
 
+        # Add label for nearest land
         self.cpa_label = ttk.Label(self, text="Nearest Land:")
         self.cpa_label.grid(row=3, column=0, sticky="w")
         self.cpa_actual = ttk.Label(self, text="-")
         self.cpa_actual.grid(row=3, column=1, padx=(10, 0), sticky="ew")
 
+        # Coordinate entry boxes, specifically important if manual entry necessary
         self.coord_frame = ttk.Frame(self)
         self.coord_frame.grid(row=4, column=0, columnspan=2, pady = 10, sticky="ew")
         self.lat_label = ttk.Label(self.coord_frame, text="LAT:")
@@ -80,6 +87,7 @@ class ShipDetails (ttk.LabelFrame):
         self.lat_entry.grid(row=0, column=1, padx=(5, 10), sticky="w")
         self.lat_entry.bind("<Return>", self.update_cpa)
 
+        # Same as above but just longitude
         self.lon_label = ttk.Label(self.coord_frame, text="LON:")
         self.lon_label.grid(row=0, column=2, sticky="w")
         self.lon_entry = ttk.Entry(self.coord_frame, width=self.COORD_WIDTH)
@@ -95,11 +103,13 @@ class ActivityDetails(ttk.LabelFrame):
 
         self.add_widgets()
     def add_widgets(self):
+        # What to name your activity
         self.title_label = ttk.Label(self, text="Title:")
         self.title_label.grid(row=0, column=0, padx=(0,10), pady=(0,10), sticky="w")
         self.title_entry = ttk.Entry(self)
         self.title_entry.grid(row=0, column=1, padx=(10, 0), pady=(0,10), sticky="ew")
 
+        # Log dates (Day 2/74) etc etc
         self.log_label = ttk.Label(self, text="Log Date:")
         self.log_label.grid(row=1, column=0)
         self.log_frame = ttk.Frame(self)
@@ -110,6 +120,12 @@ class ActivityDetails(ttk.LabelFrame):
         self.logtot_entry = ttk.Entry(self.log_frame, width=self.LOG_WIDTH)
         self.logtot_entry.grid(row=0, column=2)
         self.log_frame.grid(row=1, column=1, sticky="e")
+
+        # Activity Type Dropdown
+
+        # Distance entry box
+
+        # Duration menu
 
 class App(ttk.Frame):
     def __init__ (self, parent):
