@@ -5,6 +5,7 @@ import sv_ttk
 import darkdetect
 
 import pywinstyles, sys, os
+import closest_land
 
 class ShipDetails (ttk.LabelFrame):
     COORD_WIDTH = 5;
@@ -22,6 +23,12 @@ class ShipDetails (ttk.LabelFrame):
 
         if lat and lon:
             print(f"Latitude: {lat}, Longitude: {lon}");
+            nearest = closest_land.closest_land(float(lat), float(lon));
+            distance = closest_land.distance_to_nearest(float(lat), float(lon), nearest);
+            bearing = closest_land.bearing_to_nearest(float(lat), float(lon), nearest)
+            print(f"Distance to nearest land: {distance} nautical miles")
+            print(f"Bearing to nearest land: {bearing} degrees")
+
 
     def __init__ (self, parent):
         super().__init__(parent, text="Ship Details", padding=15)
