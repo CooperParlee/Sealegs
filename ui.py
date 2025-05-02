@@ -86,6 +86,31 @@ class ShipDetails (ttk.LabelFrame):
         self.lon_entry.grid(row=0, column=3, padx=(5, 0), sticky="w")
         self.lon_entry.bind("<Return>", self.update_cpa)
 
+class ActivityDetails(ttk.LabelFrame):
+    LOG_WIDTH = 5;
+
+    def __init__ (self, parent):
+        super().__init__(parent, text="Activity", padding=15)
+        self.parent = parent
+
+        self.add_widgets()
+    def add_widgets(self):
+        self.title_label = ttk.Label(self, text="Title:")
+        self.title_label.grid(row=0, column=0, padx=(0,10), pady=(0,10), sticky="w")
+        self.title_entry = ttk.Entry(self)
+        self.title_entry.grid(row=0, column=1, padx=(10, 0), pady=(0,10), sticky="ew")
+
+        self.log_label = ttk.Label(self, text="Log Date:")
+        self.log_label.grid(row=1, column=0)
+        self.log_frame = ttk.Frame(self)
+        self.log_entry = ttk.Entry(self.log_frame, width=self.LOG_WIDTH)
+        self.log_entry.grid(row=0, column=0)
+        self.slash = ttk.Label(self.log_frame, text="/")
+        self.slash.grid(row=0, column=1, padx = (5, 5),)
+        self.logtot_entry = ttk.Entry(self.log_frame, width=self.LOG_WIDTH)
+        self.logtot_entry.grid(row=0, column=2)
+        self.log_frame.grid(row=1, column=1, sticky="e")
+
 class App(ttk.Frame):
     def __init__ (self, parent):
         super().__init__(parent, padding=15)
@@ -95,6 +120,7 @@ class App(ttk.Frame):
             self.rowconfigure(index, weight=1)
 
         ShipDetails(self).grid(row=0, column=0, padx=(0, 10), sticky="nsew");
+        ActivityDetails(self).grid(row=0, column=1, sticky="nsew");
 
 def main():
     root = tkinter.Tk()
