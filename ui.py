@@ -97,6 +97,7 @@ class ShipDetails (ttk.LabelFrame):
 class ActivityDetails(ttk.LabelFrame):
     LOG_WIDTH = 5;
     DISTANCE_WIDTH = 3;
+    TIME_WIDTH = 2;
     ACTIVITY_TYPES = ["Run", "Ride", "Elliptical", "Workout"];
 
     def __init__ (self, parent):
@@ -113,7 +114,7 @@ class ActivityDetails(ttk.LabelFrame):
 
         # Log dates (Day 2/74) etc etc
         self.log_label = ttk.Label(self, text="Log Date:")
-        self.log_label.grid(row=1, column=0)
+        self.log_label.grid(row=1, column=0, sticky="w")
         self.log_frame = ttk.Frame(self)
         self.log_entry = ttk.Entry(self.log_frame, width=self.LOG_WIDTH)
         self.log_entry.grid(row=0, column=0)
@@ -129,17 +130,36 @@ class ActivityDetails(ttk.LabelFrame):
         self.type_dropdown = ttk.Combobox(self, values=self.ACTIVITY_TYPES, state="readonly", text="Sport")
         self.type_dropdown.grid(row=2, column=1, padx=(10,0), pady=10, sticky="ew")
 
+        self.len_frame = ttk.Frame(self)
         # Distance entry box
-        self.distance_label = ttk.Label(self, text="Distance:")
-        self.distance_box = ttk.Frame(self)
+        self.distance_label = ttk.Label(self.len_frame, text="Distance:")
+        self.distance_box = ttk.Frame(self.len_frame)
         self.distance_entry = ttk.Entry(self.distance_box, width=self.DISTANCE_WIDTH)
-        self.distance_entry.grid(row=0, column=0)
+        self.distance_entry.grid(row=0, column=0, padx=0)
         self.mi_label = ttk.Label(self.distance_box, text="mi")
-        self.mi_label.grid(row=0, column=1, padx=(5,0))
-        self.distance_label.grid(row=3, column=0, sticky="w")
-        self.distance_box.grid(row=3, column=1, padx=0, sticky="e")
+        self.mi_label.grid(row=0, column=1, padx=5)
+        self.distance_label.grid(row=0, column=0, sticky="w", padx=(0,13))
+        self.distance_box.grid(row=0, column=1, padx=0, sticky="e")
 
         # Duration menu
+        self.duration_label = ttk.Label(self.len_frame, text="Duration:")
+        self.duration_label.grid(row=0, column=2, padx=10)
+        self.duration_frame = ttk.Frame(self.len_frame)
+
+        self.hr_entry = ttk.Entry(self.duration_frame, width = self.TIME_WIDTH)
+        self.hr_entry.grid(row=0, column=0)
+        self.div_label_1 = ttk.Label(self.duration_frame, text=":")
+        self.div_label_1.grid(row=0, column=1, padx=3)
+        self.mm_entry = ttk.Entry(self.duration_frame, width = self.TIME_WIDTH)
+        self.mm_entry.grid(row=0, column=2)
+        self.div_label_2 = ttk.Label(self.duration_frame, text=":")
+        self.div_label_2.grid(row=0, column=3, padx=3)
+        self.ss_entry = ttk.Entry(self.duration_frame, width = self.TIME_WIDTH)
+        self.ss_entry.grid(row=0, column=4)
+
+        self.duration_frame.grid(row=0, column=3, sticky="e")
+
+        self.len_frame.grid(row=3, column=0, columnspan=2, sticky="w")
 
 class App(ttk.Frame):
     def __init__ (self, parent):
